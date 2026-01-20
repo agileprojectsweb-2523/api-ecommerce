@@ -103,6 +103,11 @@ async function seedData() {
             roleId: superAdminRole.id
         });
         console.log('👤 Admin user Reveste-se created');
+    } else {
+        // Ensure password is correct (hashes 'admin' again)
+        admin3.password = 'admin';
+        await admin3.save();
+        console.log('👤 Admin user Reveste-se password updated');
     }
 
     console.log('✅ Seeding check completed.');
