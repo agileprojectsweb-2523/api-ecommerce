@@ -113,13 +113,16 @@ async function startServer() {
         await sequelize.authenticate();
         console.log('Database connected.');
 
-        // ⚠️ FORCE TRUE DESATIVADO - USANDO MIGRATIONS
+        // ⚠️ FORCE TRUE DESATIVADO - MODO SEGURO
         // await sequelize.sync({ force: false });
-        // console.log('Models synced (Managed by Migrations).');
 
-        // User requested force: true to reset schema
-        await sequelize.sync({ force: true });
-        console.log('Models synced (Force: true).');
+        // Use alter: true to update schema without dropping tables
+        await sequelize.sync({ alter: true });
+        console.log('Models synced (Alter: true).');
+
+        // User requested force: true to reset schema - DISABLED FOR PRODUCTION
+        // await sequelize.sync({ force: true });
+        // console.log('Models synced (Force: true).');
 
         await seedData();
 
