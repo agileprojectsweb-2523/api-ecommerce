@@ -3,7 +3,9 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 require('dotenv').config();
+require('dotenv').config();
 const path = require('path');
+const bcrypt = require('bcryptjs');
 const sequelize = require('./src/config/sequelize');
 const routes = require('./src/routes');
 
@@ -105,9 +107,11 @@ async function seedData() {
         console.log('👤 Admin user Reveste-se created');
     } else {
         // Ensure password is correct (hashes 'admin' again)
-        admin3.password = 'admin';
+        // Manual hash to be 100% sure, bypassing hooks if needed
+        const hashedPassword = await bcrypt.hash('admin', 10);
+        admin3.password = hashedPassword;
         await admin3.save();
-        console.log('👤 Admin user Reveste-se password updated');
+        console.log('👤 Admin user Reveste-se password updated (Force Hash)');
     }
 
     console.log('✅ Seeding check completed.');
